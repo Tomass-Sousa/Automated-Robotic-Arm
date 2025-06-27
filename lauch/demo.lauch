@@ -1,0 +1,15 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find automated_pick_place)/worlds/table_scene.world"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find automated_pick_place)/urdf/ur5.urdf.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher" />
+
+  <include file="$(find moveit_config)/launch/demo.launch" />
+
+  <node pkg="automated_pick_place" type="vision_node.py" name="vision_node" output="screen" />
+  <node pkg="automated_pick_place" type="pick_place_controller.py" name="pick_place_controller" output="screen" />
+</launch>
